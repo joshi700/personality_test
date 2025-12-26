@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Personality Assessment Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #6D28D9;
+            --primary-light: #A78BFA;
+            --secondary: #EC4899;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --dark: #1F2937;
+            --gray: #6B7280;
+            --light: #F3F4F6;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Mobile-First Base Styles */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Navigation */
+        .navigation {
+            background: var(--white);
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--white);
+            flex-direction: column;
+            padding: 4rem 1rem 1rem;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-menu.active {
+            display: flex;
+        }
+
+        .nav-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+            display: block;
+        }
+
+        .nav-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .nav-link {
+            padding: 0.75rem 1rem;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--primary-light);
+            color: var(--white);
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: var(--light);
+            border-radius: var(--radius);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            line-height: 1.5;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-block {
+            width: 100%;
+            display: block;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Login Page */
+        .login-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Dashboard */
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        /* Quiz Interface */
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--white);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .question-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+
+        /* Likert Scale - Mobile Optimized */
+        .likert-scale {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1rem 0;
+        }
+
+        .scale-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--light);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .scale-option:hover {
+            background: var(--primary-light);
+            transform: translateX(5px);
+        }
+
+        .scale-option input[type="radio"] {
+            width: auto;
+            margin-right: 1rem;
+        }
+
+        .scale-option-label {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        /* Admin Panel - Mobile Optimized */
+        .admin-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .admin-sidebar {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .admin-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .admin-nav-item {
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        .admin-nav-item:hover,
+        .admin-nav-item.active {
+            background: var(--primary-light);
+            color: var(--white);
+        }
+
+        .admin-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Tables - Mobile Responsive */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: var(--light);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Results Page */
+        .results-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .personality-badge {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+        }
+
+        .personality-type {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .personality-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .trait-card {
+            background: var(--light);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .trait-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .trait-score-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .score-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .score-value {
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 50px;
+            text-align: right;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loader */
+        .loader {
+            border: 4px solid var(--light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-toggle,
+            .nav-close {
+                display: none;
+            }
+
+            .nav-menu {
+                display: flex;
+                flex-direction: row;
+                position: static;
+                padding: 0;
+                gap: 1rem;
+                background: transparent;
+            }
+
+            .likert-scale {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .scale-option {
+                flex-direction: column;
+                width: 60px;
+                height: 60px;
+                padding: 0;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                border: 3px solid var(--border);
+            }
+
+            .scale-option:hover {
+                transform: translateY(-5px) scale(1.1);
+            }
+
+            .scale-option input[type="radio"] {
+                position: absolute;
+                opacity: 0;
+            }
+
+            .scale-option-label {
+                font-size: 0.875rem;
+                margin: 0;
+            }
+
+            .modal-footer {
+                flex-direction: row;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .admin-container {
+                flex-direction: row;
+            }
+
+            .admin-sidebar {
+                width: 250px;
+                position: sticky;
+                top: 5rem;
+                height: fit-content;
+            }
+
+            .admin-content {
+                flex: 1;
+            }
+
+            .login-title {
+                font-size: 2.5rem;
+            }
+
+            .dashboard-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .nav-container {
+                padding: 1.5rem 2rem;
+            }
+
+            .card {
+                padding: 2rem;
+            }
+
+            .question-text {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .navigation,
+            .btn,
+            .nav-toggle {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid var(--border);
+            }
+        }
+
+        /* Loading State */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Focus Styles */
+        *:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 250px;
+            max-width: 400px;
+            pointer-events: all;
+            animation: slideInRight 0.3s ease;
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast-error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast-warning {
+            border-left: 4px solid var(--warning);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Navigation -->
+    <nav class="navigation" id="navigation" style="display: none;">
+        <div class="nav-container">
+            <div class="nav-brand">Personality Test</div>
+            
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <button class="nav-close" onclick="toggleMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <a href="#" class="nav-link active" onclick="showPage('dashboard')">Dashboard</a>
+                <a href="#" class="nav-link" onclick="showPage('quiz')">Take Test</a>
+                <a href="#" class="nav-link" onclick="showPage('results')">Results</a>
+                <a href="#" class="nav-link" id="adminNavLink" onclick="showPage('admin')" style="display: none;">Admin</a>
+                <div class="nav-user">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userDisplay">User</span>
+                    <button class="btn btn-sm btn-secondary" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="page active">
+            <div class="login-container">
+                <div class="card">
+                    <div class="login-header">
+                        <h1 class="login-title">Personality Assessment</h1>
+                        <p style="color: var(--gray);">Discover insights about your personality</p>
+                    </div>
+
+                    <div class="alert alert-error" id="loginError"></div>
+
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </form>
+
+                    <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                        <p style="color: var(--gray); margin-bottom: 1rem;">Or continue with</p>
+                        <button class="btn btn-secondary btn-block" onclick="googleSignIn()">
+                            <i class="fab fa-google" style="margin-right: 0.5rem;"></i>
+                            Sign in with Google
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboardPage" class="page">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Welcome Back!</h1>
+                <p style="color: var(--gray);">Your personality assessment dashboard</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">60</div>
+                    <div class="stat-label">Total Questions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">15</div>
+                    <div class="stat-label">Minutes to Complete</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Personality Traits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Private & Secure</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="margin-bottom: 1rem;">About This Assessment</h2>
+                <p style="line-height: 1.6; color: var(--gray); margin-bottom: 1.5rem;">
+                    This comprehensive personality assessment helps you understand your unique traits, 
+                    strengths, and areas for growth. Based on scientific research, our assessment 
+                    provides detailed insights into five major personality dimensions.
+                </p>
+                <div id="userProgress" style="margin-bottom: 1.5rem;">
+                    <p style="color: var(--success); font-weight: 600;">
+                        <i class="fas fa-info-circle"></i> Ready to begin your assessment
+                    </p>
+                </div>
+                <button class="btn btn-primary" onclick="startQuiz()">Start Assessment</button>
+            </div>
+        </div>
+
+        <!-- Quiz Page -->
+        <div id="quizPage" class="page">
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h2>Personality Assessment</h2>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                    </div>
+                    <p id="progressText">Question 1 of 60</p>
+                </div>
+
+                <div id="questionContainer">
+                    <!-- Questions will be loaded here -->
+                </div>
+
+                <div style="display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem;">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()">Previous</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Page -->
+        <div id="resultsPage" class="page">
+            <div class="results-container">
+                <div class="personality-badge">
+                    <div class="personality-type" id="personalityType">INTJ</div>
+                    <div class="personality-title" id="personalityTitle">The Architect</div>
+                    <p id="personalityDescription">Strategic and analytical thinker</p>
+                </div>
+
+                <div class="card">
+                    <h2 style="margin-bottom: 1.5rem;">Your Personality Traits</h2>
+                    <div id="traitsContainer">
+                        <!-- Traits will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 style="margin-bottom: 1.5rem;">Key Characteristics</h2>
+                    <ul id="characteristics" style="line-height: 1.8; color: var(--gray);">
+                        <!-- Characteristics will be loaded here -->
+                    </ul>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="downloadResults()">
+                        <i class="fas fa-download" style="margin-right: 0.5rem;"></i>
+                        Download Report
+                    </button>
+                    <button class="btn btn-secondary" onclick="shareResults()">
+                        <i class="fas fa-share" style="margin-right: 0.5rem;"></i>
+                        Share Results
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPage" class="page">
+            <div class="admin-container">
+                <aside class="admin-sidebar">
+                    <h3 style="margin-bottom: 1rem;">Admin Panel</h3>
+                    <nav class="admin-nav">
+                        <a href="#" class="admin-nav-item active" onclick="showAdminTab('overview')">
+                            <i class="fas fa-chart-pie"></i> Overview
+                        </a>
+                        <a href="#" class="admin-nav-item" onclick="showAdminTab('organizations')">
+                            <i class="fas fa-building"></i> Organizations
+                        </a>
+                        <a href="#" class="admin-nav-item" onclick="showAdminTab('questions')">
+                            <i class="fas fa-question-circle"></i> Questions
+                        </a>
+                        <a href="#" class="admin-nav-item" onclick="showAdminTab('users')">
+                            <i class="fas fa-users"></i> Users
+                        </a>
+                        <a href="#" class="admin-nav-item" onclick="showAdminTab('interpretations')">
+                            <i class="fas fa-brain"></i> Interpretations
+                        </a>
+                    </nav>
+                </aside>
+
+                <main class="admin-content" id="adminContent">
+                    <!-- Admin content will be loaded here -->
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal Title</h3>
+                <button class="btn btn-sm" onclick="closeModal()" style="background: none; color: var(--dark);">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" id="modalSubmit">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        let appState = {
+            currentUser: null,
+            currentPage: 'login',
+            currentAdminTab: 'overview',
+            quizState: {
+                currentQuestion: 0,
+                answers: {},
+                startTime: null,
+                endTime: null
+            },
+            questions: [],
+            sections: [],
+            interpretations: [],
+            organizations: [],
+            users: []
+        };
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            loadSampleData();
+            
+            // Handle responsive navigation
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 640) {
+                    document.getElementById('navMenu').classList.remove('active');
+                }
+            });
+        });
+
+        function initializeApp() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                appState.currentUser = JSON.parse(savedUser);
+                showDashboard();
+            }
+
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        }
+
+        // Load Sample Data
+        function loadSampleData() {
+            // Sample Questions - 60 questions as requested
+            const questionTemplates = [
+                "I find small talk enjoyable and energizing.",
+                "I rarely feel the need to be by myself.",
+                "I prefer variety to routine.",
+                "I enjoy exploring new ideas and concepts.",
+                "I always complete tasks on time.",
+                "I pay attention to details.",
+                "I trust others easily.",
+                "I feel others' emotions deeply.",
+                "I rarely feel anxious or worried.",
+                "I handle stress well.",
+                "I enjoy being the center of attention.",
+                "I feel comfortable in social situations.",
+                "I am curious about many different things.",
+                "I have a vivid imagination.",
+                "I like order and regularity.",
+                "I follow through on my commitments.",
+                "I believe in the good intentions of others.",
+                "I am considerate of others' feelings.",
+                "I remain calm under pressure.",
+                "I adapt easily to change."
+            ];
+
+            // Generate 60 questions
+            appState.questions = [];
+            for (let i = 0; i < 60; i++) {
+                appState.questions.push({
+                    id: i + 1,
+                    text: questionTemplates[i % questionTemplates.length],
+                    section: ['extroversion', 'openness', 'conscientiousness', 'agreeableness', 'neuroticism'][Math.floor(i / 12)],
+                    type: 'scale'
+                });
+            }
+
+            // Sections
+            appState.sections = [
+                { id: 1, name: "Extroversion", description: "Sociability and energy from external sources" },
+                { id: 2, name: "Openness", description: "Creativity and openness to experiences" },
+                { id: 3, name: "Conscientiousness", description: "Organization and reliability" },
+                { id: 4, name: "Agreeableness", description: "Cooperation and trust" },
+                { id: 5, name: "Neuroticism", description: "Emotional stability" }
+            ];
+
+            // Sample Interpretations
+            appState.interpretations = [
+                {
+                    id: 1,
+                    type: "INTJ",
+                    title: "The Architect",
+                    description: "Imaginative and strategic thinkers, with a plan for everything.",
+                    characteristics: [
+                        "Independent and decisive",
+                        "High standards for performance",
+                        "Natural leaders",
+                        "Strategic and analytical"
+                    ]
+                },
+                {
+                    id: 2,
+                    type: "ENFP",
+                    title: "The Campaigner",
+                    description: "Enthusiastic, creative and sociable free spirits.",
+                    characteristics: [
+                        "Warm and enthusiastic",
+                        "Creative and imaginative",
+                        "Values-driven",
+                        "Spontaneous and flexible"
+                    ]
+                }
+            ];
+
+            // Sample Organizations
+            appState.organizations = [
+                { id: 1, name: "Tech Corp", users: 25, testsCompleted: 18 },
+                { id: 2, name: "Marketing Agency", users: 15, testsCompleted: 12 }
+            ];
+
+            // Sample Users
+            appState.users = [
+                { id: 1, username: "admin", password: "admin123", role: "admin", email: "admin@test.com" },
+                { id: 2, username: "user1", password: "test123", role: "user", email: "user1@test.com" },
+                { id: 3, username: "user2", password: "test123", role: "user", email: "user2@test.com" }
+            ];
+        }
+
+        // Navigation Functions
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show requested page
+            document.getElementById(pageName + 'Page').classList.add('active');
+
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Close mobile menu
+            document.getElementById('navMenu').classList.remove('active');
+
+            appState.currentPage = pageName;
+        }
+
+        // Authentication Functions
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const user = appState.users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                appState.currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showDashboard();
+                showToast('Login successful!', 'success');
+            } else {
+                showError('loginError', 'Invalid username or password');
+            }
+        }
+
+        function googleSignIn() {
+            showToast('Google Sign-In would be implemented with proper OAuth', 'warning');
+        }
+
+        function logout() {
+            appState.currentUser = null;
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('quizResults');
+            showPage('login');
+            document.getElementById('navigation').style.display = 'none';
+            showToast('Logged out successfully', 'success');
+        }
+
+        function showDashboard() {
+            document.getElementById('navigation').style.display = 'block';
+            document.getElementById('userDisplay').textContent = appState.currentUser.username;
+            
+            if (appState.currentUser.role === 'admin') {
+                document.getElementById('adminNavLink').style.display = 'inline-block';
+            }
+            
+            showPage('dashboard');
+            loadUserProgress();
+        }
+
+        // Quiz Functions
+        function startQuiz() {
+            appState.quizState = {
+                currentQuestion: 0,
+                answers: {},
+                startTime: new Date(),
+                endTime: null
+            };
+            showPage('quiz');
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = appState.questions[appState.quizState.currentQuestion];
+            const totalQuestions = appState.questions.length;
+            const progress = ((appState.quizState.currentQuestion + 1) / totalQuestions) * 100;
+
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = 
+                `Question ${appState.quizState.currentQuestion + 1} of ${totalQuestions}`;
+
+            const container = document.getElementById('questionContainer');
+            
+            // Mobile-optimized Likert scale
+            container.innerHTML = `
+                <div class="question-card">
+                    <span class="question-number">Question ${appState.quizState.currentQuestion + 1}</span>
+                    <div class="question-text">${question.text}</div>
+                    
+                    <div class="likert-scale">
+                        <div class="scale-option">
+                            <input type="radio" name="q${question.id}" value="1" id="q${question.id}_1"
+                                ${appState.quizState.answers[question.id] === 1 ? 'checked' : ''}>
+                            <label for="q${question.id}_1" class="scale-option-label">Strongly Agree</label>
+                        </div>
+                        <div class="scale-option">
+                            <input type="radio" name="q${question.id}" value="2" id="q${question.id}_2"
+                                ${appState.quizState.answers[question.id] === 2 ? 'checked' : ''}>
+                            <label for="q${question.id}_2" class="scale-option-label">Agree</label>
+                        </div>
+                        <div class="scale-option">
+                            <input type="radio" name="q${question.id}" value="3" id="q${question.id}_3"
+                                ${appState.quizState.answers[question.id] === 3 ? 'checked' : ''}>
+                            <label for="q${question.id}_3" class="scale-option-label">Somewhat Agree</label>
+                        </div>
+                        <div class="scale-option">
+                            <input type="radio" name="q${question.id}" value="4" id="q${question.id}_4"
+                                ${appState.quizState.answers[question.id] === 4 ? 'checked' : ''}>
+                            <label for="q${question.id}_4" class="scale-option-label">Neutral</label>
+                        </div>
+                        <div class="scale-option">
+                            <input type="radio" name="q${question.id}" value="5" id="q${question.id}_5"
+                                ${appState.quizState.answers[question.id] === 5 ? 'checked' : ''}>
+                            <label for="q${question.id}_5" class="scale-option-label">Somewhat Disagree</label>
+                        </div>
+                        <div class="scale-option">
+                            <input type="radio" name="q${question.id}" value="6" id="q${question.id}_6"
+                                ${appState.quizState.answers[question.id] === 6 ? 'checked' : ''}>
+                            <label for="q${question.id}_6" class="scale-option-label">Disagree</label>
+                        </div>
+                        <div class="scale-option">
+                            <input type="radio" name="q${question.id}" value="7" id="q${question.id}_7"
+                                ${appState.quizState.answers[question.id] === 7 ? 'checked' : ''}>
+                            <label for="q${question.id}_7" class="scale-option-label">Strongly Disagree</label>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add event listeners
+            container.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    appState.quizState.answers[question.id] = parseInt(e.target.value);
+                });
+            });
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').style.display = 
+                appState.quizState.currentQuestion === 0 ? 'none' : 'block';
+            document.getElementById('nextBtn').textContent = 
+                appState.quizState.currentQuestion === totalQuestions - 1 ? 'Finish' : 'Next';
+        }
+
+        function nextQuestion() {
+            const currentQ = appState.questions[appState.quizState.currentQuestion];
+            
+            if (!appState.quizState.answers[currentQ.id]) {
+                showToast('Please answer the current question', 'warning');
+                return;
+            }
+
+            if (appState.quizState.currentQuestion < appState.questions.length - 1) {
+                appState.quizState.currentQuestion++;
+                displayQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function previousQuestion() {
+            if (appState.quizState.currentQuestion > 0) {
+                appState.quizState.currentQuestion--;
+                displayQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            appState.quizState.endTime = new Date();
+            calculateResults();
+            showPage('results');
+            showToast('Assessment completed successfully!', 'success');
+        }
+
+        function calculateResults() {
+            // Calculate scores using the scoring matrix
+            const scoringMatrix = {
+                '1-5': [1, 1, 1, 2],
+                '6-10': [1, 2, 2, 0],
+                '11-15': [1, 1, 2, 1],
+                '16-20': [2, 1, 0, 2]
+            };
+
+            const scores = {};
+            appState.sections.forEach(section => {
+                scores[section.name] = 0;
+                let count = 0;
+                
+                appState.questions.forEach((question, index) => {
+                    if (question.section === section.name.toLowerCase()) {
+                        const answer = appState.quizState.answers[question.id];
+                        if (answer) {
+                            scores[section.name] += answer;
+                            count++;
+                        }
+                    }
+                });
+                
+                if (count > 0) {
+                    scores[section.name] = Math.round((scores[section.name] / (count * 7)) * 100);
+                }
+            });
+
+            displayResults(scores);
+        }
+
+        function displayResults(scores) {
+            const interpretation = appState.interpretations[0];
+            
+            document.getElementById('personalityType').textContent = interpretation.type;
+            document.getElementById('personalityTitle').textContent = interpretation.title;
+            document.getElementById('personalityDescription').textContent = interpretation.description;
+
+            const traitsContainer = document.getElementById('traitsContainer');
+            traitsContainer.innerHTML = '';
+
+            Object.entries(scores).forEach(([trait, score]) => {
+                const traitCard = document.createElement('div');
+                traitCard.className = 'trait-card';
+                traitCard.innerHTML = `
+                    <div class="trait-name">${trait}</div>
+                    <div class="trait-score-bar">
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: ${score}%"></div>
+                        </div>
+                        <div class="score-value">${score}%</div>
+                    </div>
+                `;
+                traitsContainer.appendChild(traitCard);
+            });
+
+            const characteristicsContainer = document.getElementById('characteristics');
+            characteristicsContainer.innerHTML = interpretation.characteristics
+                .map(char => `<li><i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i> ${char}</li>`)
+                .join('');
+
+            // Save results
+            localStorage.setItem('quizResults', JSON.stringify({
+                scores,
+                interpretation,
+                completedAt: appState.quizState.endTime
+            }));
+        }
+
+        function loadUserProgress() {
+            const savedResults = localStorage.getItem('quizResults');
+            const progressDiv = document.getElementById('userProgress');
+            
+            if (savedResults) {
+                const results = JSON.parse(savedResults);
+                progressDiv.innerHTML = `
+                    <p style="color: var(--success); font-weight: 600;">
+                        <i class="fas fa-check-circle"></i> Assessment Completed
+                    </p>
+                    <p>Completed on: ${new Date(results.completedAt).toLocaleDateString()}</p>
+                    <button class="btn btn-secondary" onclick="showPage('results')" style="margin-top: 0.5rem;">
+                        View Results
+                    </button>
+                `;
+            }
+        }
+
+        // Admin Functions
+        function showAdminTab(tabName) {
+            appState.currentAdminTab = tabName;
+            
+            // Update active nav
+            document.querySelectorAll('.admin-nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.toLowerCase().includes(tabName)) {
+                    item.classList.add('active');
+                }
+            });
+
+            const content = document.getElementById('adminContent');
+            
+            switch(tabName) {
+                case 'overview':
+                    content.innerHTML = `
+                        <h2>Admin Overview</h2>
+                        <div class="stats-grid" style="margin-top: 1.5rem;">
+                            <div class="stat-card">
+                                <div class="stat-value">${appState.organizations.length}</div>
+                                <div class="stat-label">Organizations</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${appState.users.length}</div>
+                                <div class="stat-label">Total Users</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${appState.questions.length}</div>
+                                <div class="stat-label">Questions</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">30</div>
+                                <div class="stat-label">Tests Completed</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'organizations':
+                    content.innerHTML = `
+                        <h2>Organizations</h2>
+                        <button class="btn btn-primary" onclick="showAddOrganization()" style="margin: 1rem 0;">
+                            <i class="fas fa-plus"></i> Add Organization
+                        </button>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Users</th>
+                                        <th>Tests</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${appState.organizations.map(org => `
+                                        <tr>
+                                            <td>${org.name}</td>
+                                            <td>${org.users}</td>
+                                            <td>${org.testsCompleted}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-secondary">Edit</button>
+                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'questions':
+                    content.innerHTML = `
+                        <h2>Questions Management</h2>
+                        <button class="btn btn-primary" onclick="showAddQuestion()" style="margin: 1rem 0;">
+                            <i class="fas fa-plus"></i> Add Question
+                        </button>
+                        <div style="margin-top: 1rem;">
+                            ${appState.questions.slice(0, 10).map(q => `
+                                <div class="card" style="margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                                        <div>
+                                            <strong>Q${q.id}:</strong> ${q.text}
+                                            <br>
+                                            <small style="color: var(--gray);">Section: ${q.section}</small>
+                                        </div>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <button class="btn btn-sm btn-secondary">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                            <p style="text-align: center; color: var(--gray);">
+                                Showing 10 of ${appState.questions.length} questions
+                            </p>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'users':
+                    content.innerHTML = `
+                        <h2>User Management</h2>
+                        <button class="btn btn-primary" onclick="showAddUser()" style="margin: 1rem 0;">
+                            <i class="fas fa-plus"></i> Add User
+                        </button>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${appState.users.map(user => `
+                                        <tr>
+                                            <td>${user.username}</td>
+                                            <td>${user.email}</td>
+                                            <td>${user.role}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-secondary">Edit</button>
+                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'interpretations':
+                    content.innerHTML = `
+                        <h2>Interpretation Rules</h2>
+                        <button class="btn btn-primary" onclick="showAddInterpretation()" style="margin: 1rem 0;">
+                            <i class="fas fa-plus"></i> Add Interpretation
+                        </button>
+                        <div class="card" style="margin-top: 1rem;">
+                            <h3>Scoring Matrix</h3>
+                            <table style="margin-top: 1rem;">
+                                <thead>
+                                    <tr>
+                                        <th>Question Range</th>
+                                        <th>Score Pattern</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>1-5</td><td>1, 1, 1, 2</td></tr>
+                                    <tr><td>6-10</td><td>1, 2, 2, 0</td></tr>
+                                    <tr><td>11-15</td><td>1, 1, 2, 1</td></tr>
+                                    <tr><td>16-20</td><td>2, 1, 0, 2</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        ${appState.interpretations.map(interp => `
+                            <div class="card" style="margin-top: 1rem;">
+                                <h3>${interp.type} - ${interp.title}</h3>
+                                <p>${interp.description}</p>
+                                <ul style="margin-top: 1rem;">
+                                    ${interp.characteristics.slice(0, 3).map(char => `<li>${char}</li>`).join('')}
+                                </ul>
+                                <div style="margin-top: 1rem;">
+                                    <button class="btn btn-sm btn-secondary">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    `;
+                    break;
+            }
+        }
+
+        // Modal Functions
+        function showModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function showAddOrganization() {
+            showModal('Add Organization', `
+                <form id="addOrgForm">
+                    <div class="form-group">
+                        <label>Organization Name</label>
+                        <input type="text" required placeholder="Enter organization name">
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Users</label>
+                        <input type="number" required placeholder="Maximum users allowed">
+                    </div>
+                </form>
+            `);
+        }
+
+        function showAddQuestion() {
+            showModal('Add Question', `
+                <form id="addQuestionForm">
+                    <div class="form-group">
+                        <label>Question Text</label>
+                        <textarea required placeholder="Enter question text" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Section</label>
+                        <select required>
+                            ${appState.sections.map(s => 
+                                `<option value="${s.name.toLowerCase()}">${s.name}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Question Type</label>
+                        <select required>
+                            <option value="scale">Likert Scale</option>
+                            <option value="multiple">Multiple Choice</option>
+                            <option value="text">Text Input</option>
+                        </select>
+                    </div>
+                </form>
+            `);
+        }
+
+        function showAddUser() {
+            showModal('Add User', `
+                <form id="addUserForm">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" required placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" required placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" required placeholder="Enter password">
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select required>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </form>
+            `);
+        }
+
+        function showAddInterpretation() {
+            showModal('Add Interpretation', `
+                <form id="addInterpretationForm">
+                    <div class="form-group">
+                        <label>Personality Type</label>
+                        <input type="text" required placeholder="e.g., INTJ">
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" required placeholder="e.g., The Architect">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea required placeholder="Enter description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Score Range</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="number" placeholder="Min" min="0" max="100">
+                            <input type="number" placeholder="Max" min="0" max="100">
+                        </div>
+                    </div>
+                </form>
+            `);
+        }
+
+        // Utility Functions
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+            
+            setTimeout(() => {
+                errorElement.classList.remove('show');
+            }, 5000);
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.getElementById('toastContainer').appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        function downloadResults() {
+            showToast('PDF download would be implemented here', 'info');
+        }
+
+        function shareResults() {
+            showToast('Share functionality would be implemented here', 'info');
+        }
+
+        // Initialize admin tab on first load
+        if (appState.currentPage === 'admin') {
+            showAdminTab('overview');
+        }
+    </script>
+</body>
+</html>
