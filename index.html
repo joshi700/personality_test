@@ -970,13 +970,7 @@
                         <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                     </form>
 
-                    <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
-                        <p style="color: var(--gray); margin-bottom: 1rem;">Or continue with</p>
-                        <button class="btn btn-secondary btn-block" onclick="googleSignIn()">
-                            <i class="fab fa-google" style="margin-right: 0.5rem;"></i>
-                            Sign in with Google
-                        </button>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -990,11 +984,11 @@
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value">60</div>
+                    <div class="stat-value">10</div>
                     <div class="stat-label">Total Questions</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">15</div>
+                    <div class="stat-value">3-5</div>
                     <div class="stat-label">Minutes to Complete</div>
                 </div>
             </div>
@@ -1027,7 +1021,7 @@
                     <i class="fas fa-clock instruction-icon"></i>
                     <div>
                         <h3>Time Required</h3>
-                        <p style="color: var(--gray);">This assessment contains 60 questions and typically takes 10-15 minutes to complete. You can save your progress and return later if needed.</p>
+                        <p style="color: var(--gray);">This assessment contains 10 questions and typically takes 3-5 minutes to complete. You can save your progress and return later if needed.</p>
                     </div>
                 </div>
 
@@ -1081,7 +1075,7 @@
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressBar" style="width: 0%"></div>
                     </div>
-                    <p id="progressText">Question 1 of 60</p>
+                    <p id="progressText">Question 1 of 10</p>
                 </div>
 
                 <div id="questionContainer">
@@ -1233,34 +1227,28 @@
 
         // Load Sample Data
         function loadSampleData() {
-            // Generate 60 questions
-            const questionTemplates = [
-                "I find small talk enjoyable and energizing.",
-                "I rarely feel the need to be by myself.",
-                "I prefer variety to routine.",
-                "I enjoy exploring new ideas and concepts.",
-                "I always complete tasks on time.",
-                "I pay attention to details.",
-                "I trust others easily.",
-                "I feel others' emotions deeply.",
-                "I rarely feel anxious or worried.",
-                "I handle stress well.",
-                "I enjoy being the center of attention.",
-                "I feel comfortable in social situations.",
-                "I am curious about many different things.",
-                "I have a vivid imagination.",
-                "I like order and regularity."
+            // Generate 10 questions (2 for each personality dimension)
+            appState.questions = [
+                // Extroversion (2 questions)
+                { id: 1, text: "I find small talk enjoyable and energizing.", section: 'extroversion', type: 'scale' },
+                { id: 2, text: "I enjoy being the center of attention.", section: 'extroversion', type: 'scale' },
+                
+                // Openness (2 questions)
+                { id: 3, text: "I prefer variety to routine.", section: 'openness', type: 'scale' },
+                { id: 4, text: "I have a vivid imagination.", section: 'openness', type: 'scale' },
+                
+                // Conscientiousness (2 questions)
+                { id: 5, text: "I always complete tasks on time.", section: 'conscientiousness', type: 'scale' },
+                { id: 6, text: "I pay attention to details.", section: 'conscientiousness', type: 'scale' },
+                
+                // Agreeableness (2 questions)
+                { id: 7, text: "I trust others easily.", section: 'agreeableness', type: 'scale' },
+                { id: 8, text: "I feel others' emotions deeply.", section: 'agreeableness', type: 'scale' },
+                
+                // Neuroticism (2 questions)
+                { id: 9, text: "I rarely feel anxious or worried.", section: 'neuroticism', type: 'scale' },
+                { id: 10, text: "I handle stress well.", section: 'neuroticism', type: 'scale' }
             ];
-
-            appState.questions = [];
-            for (let i = 0; i < 60; i++) {
-                appState.questions.push({
-                    id: i + 1,
-                    text: questionTemplates[i % questionTemplates.length],
-                    section: ['extroversion', 'openness', 'conscientiousness', 'agreeableness', 'neuroticism'][Math.floor(i / 12)],
-                    type: 'scale'
-                });
-            }
 
             // Sections
             appState.sections = [
@@ -1342,10 +1330,6 @@
             } else {
                 showError('loginError', 'Invalid username or password');
             }
-        }
-
-        function googleSignIn() {
-            showToast('Google Sign-In integration coming soon', 'warning');
         }
 
         function logout() {
@@ -1617,7 +1601,7 @@
                                 <div class="stat-label">Total Users</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-value">60</div>
+                                <div class="stat-value">10</div>
                                 <div class="stat-label">Questions</div>
                             </div>
                             <div class="stat-card">
