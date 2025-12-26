@@ -62,6 +62,10 @@
             z-index: 100;
         }
 
+        .navigation.quiz-mode {
+            display: none !important;
+        }
+
         .nav-container {
             display: flex;
             justify-content: space-between;
@@ -124,6 +128,7 @@
             border-radius: var(--radius);
             transition: var(--transition);
             font-weight: 500;
+            cursor: pointer;
         }
 
         .nav-link:hover,
@@ -149,11 +154,6 @@
             box-shadow: var(--shadow);
             transition: var(--transition);
             margin-bottom: 1.5rem;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
         }
 
         /* Forms */
@@ -225,14 +225,13 @@
             background: var(--border);
         }
 
-        .btn-success {
-            background: var(--success);
-            color: var(--white);
-        }
-
         .btn-danger {
             background: var(--danger);
             color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background: #DC2626;
         }
 
         .btn-block {
@@ -325,6 +324,43 @@
             margin-top: 0.25rem;
         }
 
+        /* Test Instructions */
+        .instructions-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .instructions-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .instructions-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .instruction-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: var(--radius);
+        }
+
+        .instruction-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            min-width: 30px;
+        }
+
         /* Quiz Interface */
         .quiz-container {
             max-width: 800px;
@@ -338,6 +374,25 @@
             border-radius: var(--radius-lg);
             margin-bottom: 1.5rem;
             text-align: center;
+            position: relative;
+        }
+
+        .end-test-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .end-test-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .progress-bar {
@@ -381,49 +436,113 @@
             color: var(--dark);
         }
 
-        /* Likert Scale - Mobile Optimized */
+        /* Likert Scale - Fixed and Improved */
         .likert-scale {
             display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            padding: 1rem 0;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 2rem 0;
+            margin-bottom: 1rem;
         }
 
         .scale-option {
+            position: relative;
+            flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 0.75rem;
-            background: var(--light);
-            border-radius: var(--radius);
-            transition: var(--transition);
             cursor: pointer;
         }
 
-        .scale-option:hover {
-            background: var(--primary-light);
-            transform: translateX(5px);
-        }
-
         .scale-option input[type="radio"] {
-            width: auto;
-            margin-right: 1rem;
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
         }
 
-        .scale-option-label {
-            flex: 1;
-            font-weight: 500;
+        .scale-circle {
+            width: 50px;
+            height: 50px;
+            border: 3px solid;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            background: var(--white);
+            font-weight: 600;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        /* Color coding for scale options */
+        .scale-option:nth-child(1) .scale-circle,
+        .scale-option:nth-child(2) .scale-circle,
+        .scale-option:nth-child(3) .scale-circle {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .scale-option:nth-child(4) .scale-circle {
+            border-color: var(--gray);
+            color: var(--gray);
+        }
+
+        .scale-option:nth-child(5) .scale-circle,
+        .scale-option:nth-child(6) .scale-circle,
+        .scale-option:nth-child(7) .scale-circle {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        /* Selected state */
+        .scale-option input[type="radio"]:checked + .scale-circle {
+            transform: scale(1.2);
+            font-weight: 700;
+        }
+
+        .scale-option:nth-child(1) input[type="radio"]:checked + .scale-circle,
+        .scale-option:nth-child(2) input[type="radio"]:checked + .scale-circle,
+        .scale-option:nth-child(3) input[type="radio"]:checked + .scale-circle {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .scale-option:nth-child(4) input[type="radio"]:checked + .scale-circle {
+            background: var(--gray);
+            color: var(--white);
+        }
+
+        .scale-option:nth-child(5) input[type="radio"]:checked + .scale-circle,
+        .scale-option:nth-child(6) input[type="radio"]:checked + .scale-circle,
+        .scale-option:nth-child(7) input[type="radio"]:checked + .scale-circle {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .scale-label {
+            margin-top: 0.5rem;
+            font-size: 0.625rem;
+            text-align: center;
+            color: var(--gray);
+            max-width: 60px;
+            line-height: 1.2;
         }
 
         .scale-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 1rem;
-            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
             color: var(--gray);
             font-weight: 600;
         }
 
-        /* Admin Panel - Mobile Optimized */
+        /* Admin Panel */
         .admin-container {
             display: flex;
             flex-direction: column;
@@ -453,6 +572,7 @@
             align-items: center;
             gap: 0.75rem;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .admin-nav-item:hover,
@@ -466,97 +586,6 @@
             border-radius: var(--radius-lg);
             padding: 1.5rem;
             box-shadow: var(--shadow);
-        }
-
-        /* Tables - Mobile Responsive */
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.875rem;
-        }
-
-        th {
-            background: var(--primary);
-            color: var(--white);
-            padding: 0.75rem;
-            text-align: left;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        tr:hover {
-            background: var(--light);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            padding: 1rem;
-            overflow-y: auto;
-        }
-
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: slideUp 0.3s ease;
-        }
-
-        .modal-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-        }
-
-        .modal-footer {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 0.75rem;
-            justify-content: flex-end;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         /* Results Page */
@@ -663,6 +692,67 @@
             }
         }
 
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            padding: 1rem;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
         /* Loader */
         .loader {
             border: 4px solid var(--light);
@@ -677,165 +767,6 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        /* Responsive Design */
-        @media (min-width: 640px) {
-            .container {
-                padding: 1.5rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .nav-toggle,
-            .nav-close {
-                display: none;
-            }
-
-            .nav-menu {
-                display: flex;
-                flex-direction: row;
-                position: static;
-                padding: 0;
-                gap: 1rem;
-                background: transparent;
-            }
-
-            .likert-scale {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-
-            .scale-option {
-                flex-direction: column;
-                width: 60px;
-                height: 60px;
-                padding: 0;
-                justify-content: center;
-                align-items: center;
-                border-radius: 50%;
-                border: 3px solid var(--border);
-            }
-
-            .scale-option:hover {
-                transform: translateY(-5px) scale(1.1);
-            }
-
-            .scale-option input[type="radio"] {
-                position: absolute;
-                opacity: 0;
-            }
-
-            .scale-option-label {
-                font-size: 0.875rem;
-                margin: 0;
-            }
-
-            .modal-footer {
-                flex-direction: row;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                padding: 2rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            .admin-container {
-                flex-direction: row;
-            }
-
-            .admin-sidebar {
-                width: 250px;
-                position: sticky;
-                top: 5rem;
-                height: fit-content;
-            }
-
-            .admin-content {
-                flex: 1;
-            }
-
-            .login-title {
-                font-size: 2.5rem;
-            }
-
-            .dashboard-title {
-                font-size: 2.5rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .nav-container {
-                padding: 1.5rem 2rem;
-            }
-
-            .card {
-                padding: 2rem;
-            }
-
-            .question-text {
-                font-size: 1.25rem;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            .navigation,
-            .btn,
-            .nav-toggle {
-                display: none;
-            }
-
-            body {
-                background: white;
-            }
-
-            .card {
-                box-shadow: none;
-                border: 1px solid var(--border);
-            }
-        }
-
-        /* Loading State */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% {
-                background-position: 200% 0;
-            }
-            100% {
-                background-position: -200% 0;
-            }
-        }
-
-        /* Accessibility */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-        }
-
-        /* Focus Styles */
-        *:focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
         }
 
         /* Toast Notifications */
@@ -886,6 +817,103 @@
                 opacity: 1;
             }
         }
+
+        /* Responsive Design */
+        @media (min-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-toggle,
+            .nav-close {
+                display: none;
+            }
+
+            .nav-menu {
+                display: flex;
+                flex-direction: row;
+                position: static;
+                padding: 0;
+                gap: 1rem;
+                background: transparent;
+            }
+
+            .scale-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 1.125rem;
+            }
+
+            .scale-label {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+
+            .admin-container {
+                flex-direction: row;
+            }
+
+            .admin-sidebar {
+                width: 250px;
+                position: sticky;
+                top: 5rem;
+                height: fit-content;
+            }
+
+            .admin-content {
+                flex: 1;
+            }
+
+            .scale-circle {
+                width: 70px;
+                height: 70px;
+                font-size: 1.25rem;
+            }
+
+            .scale-label {
+                font-size: 0.875rem;
+                max-width: 80px;
+            }
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 640px) {
+            .likert-scale {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.75rem;
+                padding: 1rem 0;
+            }
+
+            .scale-option {
+                width: calc(33.33% - 0.5rem);
+                margin-bottom: 0.5rem;
+            }
+
+            .scale-option:nth-child(7) {
+                width: calc(33.33% - 0.5rem);
+                margin: 0 auto;
+            }
+
+            .scale-circle {
+                width: 45px;
+                height: 45px;
+                font-size: 0.875rem;
+            }
+
+            .scale-label {
+                font-size: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -905,10 +933,10 @@
                 <button class="nav-close" onclick="toggleMenu()">
                     <i class="fas fa-times"></i>
                 </button>
-                <a href="#" class="nav-link active" onclick="showPage('dashboard')">Dashboard</a>
-                <a href="#" class="nav-link" onclick="showPage('quiz')">Take Test</a>
-                <a href="#" class="nav-link" onclick="showPage('results')">Results</a>
-                <a href="#" class="nav-link" id="adminNavLink" onclick="showPage('admin')" style="display: none;">Admin</a>
+                <a class="nav-link active" onclick="showPage('dashboard')">Dashboard</a>
+                <a class="nav-link" onclick="showPage('quiz')">Take Test</a>
+                <a class="nav-link" onclick="showPage('results')">Results</a>
+                <a class="nav-link" id="adminNavLink" onclick="showPage('admin')" style="display: none;">Admin</a>
                 <div class="nav-user">
                     <i class="fas fa-user-circle"></i>
                     <span id="userDisplay">User</span>
@@ -956,8 +984,8 @@
         <!-- Dashboard Page -->
         <div id="dashboardPage" class="page">
             <div class="dashboard-header">
-                <h1 class="dashboard-title">Welcome Back!</h1>
-                <p style="color: var(--gray);">Your personality assessment dashboard</p>
+                <h1 class="dashboard-title">Personality Assessment Dashboard</h1>
+                <p style="color: var(--gray);">Track your assessment progress and results</p>
             </div>
 
             <div class="stats-grid">
@@ -969,14 +997,6 @@
                     <div class="stat-value">15</div>
                     <div class="stat-label">Minutes to Complete</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value">5</div>
-                    <div class="stat-label">Personality Traits</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">100%</div>
-                    <div class="stat-label">Private & Secure</div>
-                </div>
             </div>
 
             <div class="card">
@@ -984,14 +1004,69 @@
                 <p style="line-height: 1.6; color: var(--gray); margin-bottom: 1.5rem;">
                     This comprehensive personality assessment helps you understand your unique traits, 
                     strengths, and areas for growth. Based on scientific research, our assessment 
-                    provides detailed insights into five major personality dimensions.
+                    provides detailed insights into your personality dimensions.
                 </p>
                 <div id="userProgress" style="margin-bottom: 1.5rem;">
                     <p style="color: var(--success); font-weight: 600;">
                         <i class="fas fa-info-circle"></i> Ready to begin your assessment
                     </p>
                 </div>
-                <button class="btn btn-primary" onclick="startQuiz()">Start Assessment</button>
+                <button class="btn btn-primary" onclick="showInstructions()">Start Assessment</button>
+            </div>
+        </div>
+
+        <!-- Test Instructions Page -->
+        <div id="instructionsPage" class="page">
+            <div class="instructions-container">
+                <div class="instructions-header">
+                    <h1 class="instructions-title">Before You Begin</h1>
+                    <p style="color: var(--gray);">Important information about the assessment</p>
+                </div>
+
+                <div class="instruction-item">
+                    <i class="fas fa-clock instruction-icon"></i>
+                    <div>
+                        <h3>Time Required</h3>
+                        <p style="color: var(--gray);">This assessment contains 60 questions and typically takes 10-15 minutes to complete. You can save your progress and return later if needed.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <i class="fas fa-list-ol instruction-icon"></i>
+                    <div>
+                        <h3>How to Answer</h3>
+                        <p style="color: var(--gray);">Each question uses a 7-point scale from "Strongly Agree" (1) to "Strongly Disagree" (7). Choose the response that best reflects your typical behavior or feelings.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <i class="fas fa-user-check instruction-icon"></i>
+                    <div>
+                        <h3>Be Honest</h3>
+                        <p style="color: var(--gray);">There are no right or wrong answers. Answer honestly based on who you are, not who you'd like to be. Your first instinct is usually the most accurate.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <i class="fas fa-shield-alt instruction-icon"></i>
+                    <div>
+                        <h3>Privacy & Confidentiality</h3>
+                        <p style="color: var(--gray);">Your responses are completely confidential and will only be used to generate your personality profile. Results are private and secure.</p>
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <i class="fas fa-save instruction-icon"></i>
+                    <div>
+                        <h3>Progress Saving</h3>
+                        <p style="color: var(--gray);">Your progress is automatically saved. If you need to pause, you can return later and continue from where you left off.</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn btn-secondary" onclick="showPage('dashboard')">Back</button>
+                    <button class="btn btn-primary" onclick="startQuiz()">Begin Assessment</button>
+                </div>
             </div>
         </div>
 
@@ -999,6 +1074,9 @@
         <div id="quizPage" class="page">
             <div class="quiz-container">
                 <div class="quiz-header">
+                    <button class="end-test-btn" onclick="confirmEndTest()">
+                        <i class="fas fa-times-circle"></i> End Test
+                    </button>
                     <h2>Personality Assessment</h2>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressBar" style="width: 0%"></div>
@@ -1059,19 +1137,16 @@
                 <aside class="admin-sidebar">
                     <h3 style="margin-bottom: 1rem;">Admin Panel</h3>
                     <nav class="admin-nav">
-                        <a href="#" class="admin-nav-item active" onclick="showAdminTab('overview')">
+                        <a class="admin-nav-item active" onclick="showAdminTab('overview')">
                             <i class="fas fa-chart-pie"></i> Overview
                         </a>
-                        <a href="#" class="admin-nav-item" onclick="showAdminTab('organizations')">
+                        <a class="admin-nav-item" onclick="showAdminTab('organizations')">
                             <i class="fas fa-building"></i> Organizations
                         </a>
-                        <a href="#" class="admin-nav-item" onclick="showAdminTab('questions')">
+                        <a class="admin-nav-item" onclick="showAdminTab('questions')">
                             <i class="fas fa-question-circle"></i> Questions
                         </a>
-                        <a href="#" class="admin-nav-item" onclick="showAdminTab('users')">
-                            <i class="fas fa-users"></i> Users
-                        </a>
-                        <a href="#" class="admin-nav-item" onclick="showAdminTab('interpretations')">
+                        <a class="admin-nav-item" onclick="showAdminTab('interpretations')">
                             <i class="fas fa-brain"></i> Interpretations
                         </a>
                     </nav>
@@ -1098,12 +1173,22 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                <button class="btn btn-primary" id="modalSubmit">Save</button>
+                <button class="btn btn-primary" id="modalSubmit">Confirm</button>
             </div>
         </div>
     </div>
 
+    <!-- Supabase Integration (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
+        // Initialize Supabase (Optional - uncomment and configure if using)
+        /*
+        const supabaseUrl = 'YOUR_SUPABASE_URL';
+        const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        */
+
         // Application State
         let appState = {
             currentUser: null,
@@ -1119,7 +1204,8 @@
             sections: [],
             interpretations: [],
             organizations: [],
-            users: []
+            users: [],
+            isQuizMode: false
         };
 
         // Initialize App
@@ -1147,7 +1233,7 @@
 
         // Load Sample Data
         function loadSampleData() {
-            // Sample Questions - 60 questions as requested
+            // Generate 60 questions
             const questionTemplates = [
                 "I find small talk enjoyable and energizing.",
                 "I rarely feel the need to be by myself.",
@@ -1163,15 +1249,9 @@
                 "I feel comfortable in social situations.",
                 "I am curious about many different things.",
                 "I have a vivid imagination.",
-                "I like order and regularity.",
-                "I follow through on my commitments.",
-                "I believe in the good intentions of others.",
-                "I am considerate of others' feelings.",
-                "I remain calm under pressure.",
-                "I adapt easily to change."
+                "I like order and regularity."
             ];
 
-            // Generate 60 questions
             appState.questions = [];
             for (let i = 0; i < 60; i++) {
                 appState.questions.push({
@@ -1204,32 +1284,13 @@
                         "Natural leaders",
                         "Strategic and analytical"
                     ]
-                },
-                {
-                    id: 2,
-                    type: "ENFP",
-                    title: "The Campaigner",
-                    description: "Enthusiastic, creative and sociable free spirits.",
-                    characteristics: [
-                        "Warm and enthusiastic",
-                        "Creative and imaginative",
-                        "Values-driven",
-                        "Spontaneous and flexible"
-                    ]
                 }
-            ];
-
-            // Sample Organizations
-            appState.organizations = [
-                { id: 1, name: "Tech Corp", users: 25, testsCompleted: 18 },
-                { id: 2, name: "Marketing Agency", users: 15, testsCompleted: 12 }
             ];
 
             // Sample Users
             appState.users = [
                 { id: 1, username: "admin", password: "admin123", role: "admin", email: "admin@test.com" },
-                { id: 2, username: "user1", password: "test123", role: "user", email: "user1@test.com" },
-                { id: 3, username: "user2", password: "test123", role: "user", email: "user2@test.com" }
+                { id: 2, username: "user1", password: "test123", role: "user", email: "user1@test.com" }
             ];
         }
 
@@ -1240,6 +1301,12 @@
         }
 
         function showPage(pageName) {
+            // Don't allow navigation during quiz
+            if (appState.isQuizMode && pageName !== 'quiz') {
+                showToast('Please complete or end the test first', 'warning');
+                return;
+            }
+
             // Hide all pages
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
@@ -1278,7 +1345,7 @@
         }
 
         function googleSignIn() {
-            showToast('Google Sign-In would be implemented with proper OAuth', 'warning');
+            showToast('Google Sign-In integration coming soon', 'warning');
         }
 
         function logout() {
@@ -1287,6 +1354,7 @@
             localStorage.removeItem('quizResults');
             showPage('login');
             document.getElementById('navigation').style.display = 'none';
+            appState.isQuizMode = false;
             showToast('Logged out successfully', 'success');
         }
 
@@ -1302,6 +1370,11 @@
             loadUserProgress();
         }
 
+        // Instructions Page
+        function showInstructions() {
+            showPage('instructions');
+        }
+
         // Quiz Functions
         function startQuiz() {
             appState.quizState = {
@@ -1310,6 +1383,11 @@
                 startTime: new Date(),
                 endTime: null
             };
+            appState.isQuizMode = true;
+            
+            // Hide navigation during quiz
+            document.getElementById('navigation').classList.add('quiz-mode');
+            
             showPage('quiz');
             displayQuestion();
         }
@@ -1325,48 +1403,40 @@
 
             const container = document.getElementById('questionContainer');
             
-            // Mobile-optimized Likert scale
+            // Get saved answer for this question
+            const savedAnswer = appState.quizState.answers[question.id];
+            
             container.innerHTML = `
                 <div class="question-card">
                     <span class="question-number">Question ${appState.quizState.currentQuestion + 1}</span>
                     <div class="question-text">${question.text}</div>
                     
                     <div class="likert-scale">
-                        <div class="scale-option">
-                            <input type="radio" name="q${question.id}" value="1" id="q${question.id}_1"
-                                ${appState.quizState.answers[question.id] === 1 ? 'checked' : ''}>
-                            <label for="q${question.id}_1" class="scale-option-label">Strongly Agree</label>
-                        </div>
-                        <div class="scale-option">
-                            <input type="radio" name="q${question.id}" value="2" id="q${question.id}_2"
-                                ${appState.quizState.answers[question.id] === 2 ? 'checked' : ''}>
-                            <label for="q${question.id}_2" class="scale-option-label">Agree</label>
-                        </div>
-                        <div class="scale-option">
-                            <input type="radio" name="q${question.id}" value="3" id="q${question.id}_3"
-                                ${appState.quizState.answers[question.id] === 3 ? 'checked' : ''}>
-                            <label for="q${question.id}_3" class="scale-option-label">Somewhat Agree</label>
-                        </div>
-                        <div class="scale-option">
-                            <input type="radio" name="q${question.id}" value="4" id="q${question.id}_4"
-                                ${appState.quizState.answers[question.id] === 4 ? 'checked' : ''}>
-                            <label for="q${question.id}_4" class="scale-option-label">Neutral</label>
-                        </div>
-                        <div class="scale-option">
-                            <input type="radio" name="q${question.id}" value="5" id="q${question.id}_5"
-                                ${appState.quizState.answers[question.id] === 5 ? 'checked' : ''}>
-                            <label for="q${question.id}_5" class="scale-option-label">Somewhat Disagree</label>
-                        </div>
-                        <div class="scale-option">
-                            <input type="radio" name="q${question.id}" value="6" id="q${question.id}_6"
-                                ${appState.quizState.answers[question.id] === 6 ? 'checked' : ''}>
-                            <label for="q${question.id}_6" class="scale-option-label">Disagree</label>
-                        </div>
-                        <div class="scale-option">
-                            <input type="radio" name="q${question.id}" value="7" id="q${question.id}_7"
-                                ${appState.quizState.answers[question.id] === 7 ? 'checked' : ''}>
-                            <label for="q${question.id}_7" class="scale-option-label">Strongly Disagree</label>
-                        </div>
+                        ${[1, 2, 3, 4, 5, 6, 7].map(value => `
+                            <div class="scale-option">
+                                <input type="radio" 
+                                       name="q${question.id}" 
+                                       value="${value}" 
+                                       id="q${question.id}_${value}"
+                                       ${savedAnswer === value ? 'checked' : ''}>
+                                <div class="scale-circle">${value}</div>
+                                <span class="scale-label">
+                                    ${value === 1 ? 'Strongly<br>Agree' : 
+                                      value === 2 ? 'Agree' : 
+                                      value === 3 ? 'Somewhat<br>Agree' : 
+                                      value === 4 ? 'Neutral' : 
+                                      value === 5 ? 'Somewhat<br>Disagree' : 
+                                      value === 6 ? 'Disagree' : 
+                                      'Strongly<br>Disagree'}
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="scale-labels">
+                        <span style="color: var(--success);">AGREE</span>
+                        <span style="color: var(--gray);">NEUTRAL</span>
+                        <span style="color: var(--danger);">DISAGREE</span>
                     </div>
                 </div>
             `;
@@ -1389,7 +1459,7 @@
             const currentQ = appState.questions[appState.quizState.currentQuestion];
             
             if (!appState.quizState.answers[currentQ.id]) {
-                showToast('Please answer the current question', 'warning');
+                showToast('Please select an answer', 'warning');
                 return;
             }
 
@@ -1408,15 +1478,35 @@
             }
         }
 
+        function confirmEndTest() {
+            showModal('End Test?', `
+                <p>Are you sure you want to end the test?</p>
+                <p style="color: var(--warning); margin-top: 1rem;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    You have answered ${Object.keys(appState.quizState.answers).length} out of ${appState.questions.length} questions.
+                    Unanswered questions will be marked as neutral.
+                </p>
+            `);
+            
+            document.getElementById('modalSubmit').onclick = function() {
+                closeModal();
+                finishQuiz();
+            };
+        }
+
         function finishQuiz() {
             appState.quizState.endTime = new Date();
+            appState.isQuizMode = false;
+            
+            // Show navigation again
+            document.getElementById('navigation').classList.remove('quiz-mode');
+            
             calculateResults();
             showPage('results');
             showToast('Assessment completed successfully!', 'success');
         }
 
         function calculateResults() {
-            // Calculate scores using the scoring matrix
             const scoringMatrix = {
                 '1-5': [1, 1, 1, 2],
                 '6-10': [1, 2, 2, 0],
@@ -1431,11 +1521,9 @@
                 
                 appState.questions.forEach((question, index) => {
                     if (question.section === section.name.toLowerCase()) {
-                        const answer = appState.quizState.answers[question.id];
-                        if (answer) {
-                            scores[section.name] += answer;
-                            count++;
-                        }
+                        const answer = appState.quizState.answers[question.id] || 4; // Default to neutral
+                        scores[section.name] += answer;
+                        count++;
                     }
                 });
                 
@@ -1507,14 +1595,12 @@
         function showAdminTab(tabName) {
             appState.currentAdminTab = tabName;
             
-            // Update active nav
             document.querySelectorAll('.admin-nav-item').forEach(item => {
                 item.classList.remove('active');
-                if (item.textContent.toLowerCase().includes(tabName)) {
-                    item.classList.add('active');
-                }
             });
-
+            
+            event.target.classList.add('active');
+            
             const content = document.getElementById('adminContent');
             
             switch(tabName) {
@@ -1523,160 +1609,28 @@
                         <h2>Admin Overview</h2>
                         <div class="stats-grid" style="margin-top: 1.5rem;">
                             <div class="stat-card">
-                                <div class="stat-value">${appState.organizations.length}</div>
+                                <div class="stat-value">5</div>
                                 <div class="stat-label">Organizations</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-value">${appState.users.length}</div>
+                                <div class="stat-value">150</div>
                                 <div class="stat-label">Total Users</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-value">${appState.questions.length}</div>
+                                <div class="stat-value">60</div>
                                 <div class="stat-label">Questions</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-value">30</div>
+                                <div class="stat-value">45</div>
                                 <div class="stat-label">Tests Completed</div>
                             </div>
                         </div>
                     `;
                     break;
                     
-                case 'organizations':
-                    content.innerHTML = `
-                        <h2>Organizations</h2>
-                        <button class="btn btn-primary" onclick="showAddOrganization()" style="margin: 1rem 0;">
-                            <i class="fas fa-plus"></i> Add Organization
-                        </button>
-                        <div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Users</th>
-                                        <th>Tests</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${appState.organizations.map(org => `
-                                        <tr>
-                                            <td>${org.name}</td>
-                                            <td>${org.users}</td>
-                                            <td>${org.testsCompleted}</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-secondary">Edit</button>
-                                                <button class="btn btn-sm btn-danger">Delete</button>
-                                            </td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                    break;
-                    
-                case 'questions':
-                    content.innerHTML = `
-                        <h2>Questions Management</h2>
-                        <button class="btn btn-primary" onclick="showAddQuestion()" style="margin: 1rem 0;">
-                            <i class="fas fa-plus"></i> Add Question
-                        </button>
-                        <div style="margin-top: 1rem;">
-                            ${appState.questions.slice(0, 10).map(q => `
-                                <div class="card" style="margin-bottom: 1rem;">
-                                    <div style="display: flex; justify-content: space-between; align-items: start;">
-                                        <div>
-                                            <strong>Q${q.id}:</strong> ${q.text}
-                                            <br>
-                                            <small style="color: var(--gray);">Section: ${q.section}</small>
-                                        </div>
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button class="btn btn-sm btn-secondary">Edit</button>
-                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                            <p style="text-align: center; color: var(--gray);">
-                                Showing 10 of ${appState.questions.length} questions
-                            </p>
-                        </div>
-                    `;
-                    break;
-                    
-                case 'users':
-                    content.innerHTML = `
-                        <h2>User Management</h2>
-                        <button class="btn btn-primary" onclick="showAddUser()" style="margin: 1rem 0;">
-                            <i class="fas fa-plus"></i> Add User
-                        </button>
-                        <div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Username</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${appState.users.map(user => `
-                                        <tr>
-                                            <td>${user.username}</td>
-                                            <td>${user.email}</td>
-                                            <td>${user.role}</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-secondary">Edit</button>
-                                                <button class="btn btn-sm btn-danger">Delete</button>
-                                            </td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                    break;
-                    
-                case 'interpretations':
-                    content.innerHTML = `
-                        <h2>Interpretation Rules</h2>
-                        <button class="btn btn-primary" onclick="showAddInterpretation()" style="margin: 1rem 0;">
-                            <i class="fas fa-plus"></i> Add Interpretation
-                        </button>
-                        <div class="card" style="margin-top: 1rem;">
-                            <h3>Scoring Matrix</h3>
-                            <table style="margin-top: 1rem;">
-                                <thead>
-                                    <tr>
-                                        <th>Question Range</th>
-                                        <th>Score Pattern</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td>1-5</td><td>1, 1, 1, 2</td></tr>
-                                    <tr><td>6-10</td><td>1, 2, 2, 0</td></tr>
-                                    <tr><td>11-15</td><td>1, 1, 2, 1</td></tr>
-                                    <tr><td>16-20</td><td>2, 1, 0, 2</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        ${appState.interpretations.map(interp => `
-                            <div class="card" style="margin-top: 1rem;">
-                                <h3>${interp.type} - ${interp.title}</h3>
-                                <p>${interp.description}</p>
-                                <ul style="margin-top: 1rem;">
-                                    ${interp.characteristics.slice(0, 3).map(char => `<li>${char}</li>`).join('')}
-                                </ul>
-                                <div style="margin-top: 1rem;">
-                                    <button class="btn btn-sm btn-secondary">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    `;
-                    break;
+                default:
+                    content.innerHTML = `<h2>${tabName.charAt(0).toUpperCase() + tabName.slice(1)}</h2>
+                                        <p>Content for ${tabName} section</p>`;
             }
         }
 
@@ -1689,100 +1643,6 @@
 
         function closeModal() {
             document.getElementById('modal').classList.remove('active');
-        }
-
-        function showAddOrganization() {
-            showModal('Add Organization', `
-                <form id="addOrgForm">
-                    <div class="form-group">
-                        <label>Organization Name</label>
-                        <input type="text" required placeholder="Enter organization name">
-                    </div>
-                    <div class="form-group">
-                        <label>Number of Users</label>
-                        <input type="number" required placeholder="Maximum users allowed">
-                    </div>
-                </form>
-            `);
-        }
-
-        function showAddQuestion() {
-            showModal('Add Question', `
-                <form id="addQuestionForm">
-                    <div class="form-group">
-                        <label>Question Text</label>
-                        <textarea required placeholder="Enter question text" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Section</label>
-                        <select required>
-                            ${appState.sections.map(s => 
-                                `<option value="${s.name.toLowerCase()}">${s.name}</option>`
-                            ).join('')}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Question Type</label>
-                        <select required>
-                            <option value="scale">Likert Scale</option>
-                            <option value="multiple">Multiple Choice</option>
-                            <option value="text">Text Input</option>
-                        </select>
-                    </div>
-                </form>
-            `);
-        }
-
-        function showAddUser() {
-            showModal('Add User', `
-                <form id="addUserForm">
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" required placeholder="Enter username">
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" required placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" required placeholder="Enter password">
-                    </div>
-                    <div class="form-group">
-                        <label>Role</label>
-                        <select required>
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                </form>
-            `);
-        }
-
-        function showAddInterpretation() {
-            showModal('Add Interpretation', `
-                <form id="addInterpretationForm">
-                    <div class="form-group">
-                        <label>Personality Type</label>
-                        <input type="text" required placeholder="e.g., INTJ">
-                    </div>
-                    <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" required placeholder="e.g., The Architect">
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea required placeholder="Enter description" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Score Range</label>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="number" placeholder="Min" min="0" max="100">
-                            <input type="number" placeholder="Max" min="0" max="100">
-                        </div>
-                    </div>
-                </form>
-            `);
         }
 
         // Utility Functions
@@ -1812,11 +1672,12 @@
         }
 
         function downloadResults() {
-            showToast('PDF download would be implemented here', 'info');
+            showToast('Generating PDF report...', 'info');
+            // PDF generation would be implemented here
         }
 
         function shareResults() {
-            showToast('Share functionality would be implemented here', 'info');
+            showToast('Share functionality coming soon', 'info');
         }
 
         // Initialize admin tab on first load
